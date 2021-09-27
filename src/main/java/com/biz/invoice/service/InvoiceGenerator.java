@@ -1,6 +1,8 @@
-package com.biz.invoice.service.service;
+package com.biz.invoice.service;
 
-import com.biz.invoice.service.exception.CabInvoiceException;
+import com.biz.invoice.exception.CabInvoiceException;
+import com.biz.invoice.model.InvoiceSummary;
+import com.biz.invoice.model.Ride;
 
 public class InvoiceGenerator {
 
@@ -33,6 +35,25 @@ public class InvoiceGenerator {
             }
         }
         return Math.max(totalFare, MINIMUM_FARE);
+    }
+    public final  InvoiceSummary CalculateFare(Ride[] rides)
+    {
+        double totalFare = 0;
+        try
+        {
+            for (Ride ride : rides)
+            {
+                totalFare += this.CalculateFare(ride.distance, ride.time);
+            }
+        }
+        catch (CabInvoiceException e)
+        {
+            if (rides == null)
+            {
+                throw new CabInvoiceException(CabInvoiceException.ExceptionType.NULL_RIDES, "no rides found");
+            }
+        }
+        return new InvoiceSummary(rides.length, totalFare);
     }
 
 }

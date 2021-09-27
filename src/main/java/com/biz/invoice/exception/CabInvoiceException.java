@@ -1,4 +1,4 @@
-package com.biz.invoice.service.exception;
+package com.biz.invoice.exception;
 
 public class CabInvoiceException extends RuntimeException
 {
@@ -13,6 +13,7 @@ public class CabInvoiceException extends RuntimeException
     public enum ExceptionType
     {
         INVALID_DISTANCE,
+        NULL_RIDES,
         INVALID_TIME;
 
     }
