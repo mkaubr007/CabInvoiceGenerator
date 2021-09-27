@@ -4,18 +4,32 @@ import com.biz.invoice.exception.CabInvoiceException;
 import com.biz.invoice.model.InvoiceSummary;
 import com.biz.invoice.model.Ride;
 import com.biz.invoice.model.RideRepository;
+import com.biz.invoice.model.RideType;
 
 public class InvoiceGenerator {
     private RideRepository rideRepository;
+    private RideType rideType;
     private static  double MINIMUM_COST_PER_KM;
     private static  int COST_PER_TIME;
     private static double MINIMUM_FARE;
 
-    public InvoiceGenerator() {
+    public InvoiceGenerator(RideType rideType) {
         this.rideRepository = new RideRepository();
-        this.MINIMUM_COST_PER_KM = 10;
-        this.COST_PER_TIME = 1;
-        this.MINIMUM_FARE = 5;
+        this.rideType = rideType;
+        try {
+            if (this.rideType.equals(RideType.NORMAL)){
+                this.MINIMUM_COST_PER_KM = 10;
+                this.COST_PER_TIME = 1;
+                this.MINIMUM_FARE = 5;
+            }
+            if (this.rideType.equals(RideType.PREMIUM)){
+                this.MINIMUM_COST_PER_KM = 15;
+                this.COST_PER_TIME = 2;
+                this.MINIMUM_FARE = 20;
+            }
+        }catch (CabInvoiceException e){
+            throw new CabInvoiceException(CabInvoiceException.ExceptionType.INVALID_RIDETYPE, "invalid ride type");
+        }
     }
 
     public final double CalculateFare(double distance, int time)

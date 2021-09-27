@@ -2,6 +2,7 @@ package com.biz.invoice;
 
 import com.biz.invoice.model.InvoiceSummary;
 import com.biz.invoice.model.Ride;
+import com.biz.invoice.model.RideType;
 import com.biz.invoice.service.InvoiceGenerator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +11,7 @@ public class InvoiceGeneratorTest {
     @Test
     public final void GivenDistanceAndTimeShouldReturnTotalFare()
     {
-        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator(RideType.NORMAL);
         double distance = 2.0;
         int time = 5;
         double fare = invoiceGenerator.CalculateFare(distance, time);
@@ -19,7 +20,7 @@ public class InvoiceGeneratorTest {
     @Test
     public final void GivenMultipleRidesShouldReturnInvoiceSummary()
     {
-        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator(RideType.NORMAL);
         Ride[] rides =
                 {
                         new Ride(2.0, 5),
@@ -33,7 +34,7 @@ public class InvoiceGeneratorTest {
     @Test
     public final void GivenMultipleRidesShouldReturnInvoiceSummaryWithAverageFare()
     {
-        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator(RideType.NORMAL);
         Ride[] rides =
                 {
                         new Ride(2.0, 5),
@@ -46,7 +47,7 @@ public class InvoiceGeneratorTest {
     @Test
     public final void GivenRidesForDifferentUsersShouldReturnInvoiceSummary()
     {
-        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator(RideType.PREMIUM);
         Ride[] rides =
                 {
                         new Ride(2.0, 5),
@@ -62,7 +63,7 @@ public class InvoiceGeneratorTest {
                 };
         invoiceGenerator.AddRides(userIdForSecondUser, ridesForSecondUser);
         InvoiceSummary invoiceSummary = invoiceGenerator.GetInvoiceSummary(userId);
-        InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+        InvoiceSummary expectedSummary = new InvoiceSummary(2, 60.0);
         Assert.assertEquals(invoiceSummary,expectedSummary);
     }
 }
