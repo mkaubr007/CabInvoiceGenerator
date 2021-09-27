@@ -43,4 +43,26 @@ public class InvoiceGeneratorTest {
         InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
         Assert.assertEquals(invoiceSummary,expectedSummary);
     }
+    @Test
+    public final void GivenRidesForDifferentUsersShouldReturnInvoiceSummary()
+    {
+        InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+        Ride[] rides =
+                {
+                        new Ride(2.0, 5),
+                        new Ride(0.1, 1)
+                };
+        String userId = "001";
+        invoiceGenerator.AddRides(userId, rides);
+        String userIdForSecondUser = "002";
+        Ride[] ridesForSecondUser =
+                {
+                        new Ride(3.0, 10),
+                        new Ride(1.0, 2)
+                };
+        invoiceGenerator.AddRides(userIdForSecondUser, ridesForSecondUser);
+        InvoiceSummary invoiceSummary = invoiceGenerator.GetInvoiceSummary(userId);
+        InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+        Assert.assertEquals(invoiceSummary,expectedSummary);
+    }
 }

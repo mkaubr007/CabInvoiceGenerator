@@ -14,6 +14,7 @@ public class CabInvoiceException extends RuntimeException
     {
         INVALID_DISTANCE,
         NULL_RIDES,
+        INVALID_USER_ID,
         INVALID_TIME;
 
     }
